@@ -29,7 +29,7 @@ clear :: HashTable k v -> HashTable k v
 clear table = defaultHashTable 
 
 insert' ::(Show k, Eq k)=>HashTable k v ->k->v->HashTable k v
-insert' (HashTable table size occupied) k v = if (2*occupied < size || not (null current)) then (HashTable (left ++ mid ++ (drop 1 right)) size newSize) 
+insert' (HashTable table size occupied) k v = if (2*occupied < size) then (HashTable (left ++ mid ++ (drop 1 right)) size newSize) 
                                               else insert' (rehash table size) k v where
                                                                         newSize = occupied + 1
                                                                         mid | elem k [key | (key,v) <- current] = [current]
