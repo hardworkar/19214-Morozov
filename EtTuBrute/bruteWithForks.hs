@@ -7,8 +7,9 @@ import qualified Data.ByteString
 import qualified Crypto.Hash.MD5 as MD5
 import qualified Data.ByteString.Base16 as Base16
 import Data.ByteString.UTF8 as BSU
-
-taskList = forM [1..1] (\x-> [' '..'~']) ++ forM [1..2] (\x-> [' '..'~']) ++ forM [1..3] (\x-> [' '..'~']) ++ forM [1..4] (\x-> [' '..'~']) ++ forM [1..5] (\x-> [' '..'~'])
+syms :: [Char]
+syms = [' '..'~']
+taskList = forM [1..1] foo ++ forM [1..2] foo ++ forM [1..3] foo ++ forM [1..4] foo ++ forM [1..5] foo where foo = (\x-> syms)
 
 hash :: String -> ByteString
 hash x = Base16.encode . MD5.hash . BSU.fromString $ x
@@ -18,7 +19,7 @@ workerLoop taskQueue result magic cntCompleted all = do
   maybeTasks <- modifyMVar taskQueue
                  (\q -> return $ case q of
                                    [] -> ([], [])
-                                   xs -> (L.drop 30 xs, L.take 30 xs))
+                                   xs -> (L.drop 50 xs, L.take 50 xs))
 
   case maybeTasks of
     [] -> do putStrLn "process ended";
